@@ -27,14 +27,21 @@ resource "aws_subnet" "dls-prisubnet" {
   }
 }
 
+// Create IGW
+resource "aws_internet_gateway" "dls-igw" {
+  vpc_id = aws_vpc.dls-vpc.id
+
+  tags = {
+    Name = "dls-igw"
+  }
+}
 
 // Create Elastic IP
 resource "aws_eip" "dls-eip" {
   vpc      = true
 }
 
-
-// Create Public NAT
+// Create NAT
 resource "aws_nat_gateway" "dls-nat" {
   allocation_id = aws_eip.dls-eip.id
   subnet_id     = aws_subnet.dls-pubsubnet.id
@@ -48,15 +55,6 @@ resource "aws_nat_gateway" "dls-nat" {
   depends_on = [aws_internet_gateway.dls-igw]
 }
 
-
-// Create IGW
-resource "aws_internet_gateway" "dls-igw" {
-  vpc_id = aws_vpc.dls-vpc.id
-
-  tags = {
-    Name = "dls-igw"
-  }
-}
 
 // Create Public Route Tables
 resource "aws_route_table" "dls-pubrt" {
@@ -72,8 +70,29 @@ resource "aws_route_table" "dls-pubrt" {
   }
 }
 
+// Create Private Route Tables
+resource "aws_route_table" "dls-prirt" {
+  vpc_id = aws_vpc.dls-vpc.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    nat_gateway_id = aws_nat_gateway.dls-nat.id
+  }
+
+  tags = {
+    Name = "dls-prirt"
+  }
+}
+
 // Route Table Association
 resource "aws_route_table_association" "dls-rta" {
   subnet_id      = aws_subnet.dls-pubsubnet.id
   route_table_id = aws_route_table.dls-pubrt.id
 }
+
+// Route Table Association Private
+resource "aws_route_table_association" "dls-prirta" {
+  subnet_id      = aws_subnet.dls-prisubnet.id
+  route_table_id = aws_route_table.dls-prirt.id
+}
+
