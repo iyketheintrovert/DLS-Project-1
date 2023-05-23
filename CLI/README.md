@@ -20,7 +20,7 @@ resource "aws_vpc" "dls-vpc" {
 ```
 ##### Create Subnets
 
-![DLS-VPC](DLS-Project-1/CLI/Terraform-VPC.png)
+![DLS-VPC](Terraform-VPC.png)
 ```
 resource "aws_subnet" "dls-pubsubnet" {
 
