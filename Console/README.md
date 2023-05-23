@@ -3,91 +3,46 @@
 ## Prequisites
 + AWS Account  
 
-### Create a vpc.tf file
-`touch vpc.tf`
+### Create VPC
+> From the console, navigate to services, search  and click on VPC.
+> On the Dashboard, click on create VPC and configure your resources.
+> - The first option VPC allows you create the other resources manually
+> - The second option VPC and more allows you create a VPC and other resources (Subnets, Route Tables, etc)
 
-#### Add Resources
-##### VPC Resource
-```
-resource "aws_vpc" "dls-vpc" {
+![DLS-VPC](VPC.png)
 
-}
-```
+##### Configure CIDR Blocks
+> Select the IP range you want for your connection
 
-![DLS-VPC](Terraform-VPC.png)
+##### Availability Zones
+> Choose availability zones where you want to deploy your subnets
 
-##### Create Subnets
-
-```
-resource "aws_subnet" "dls-pubsubnet" {
-
-}
-
-resource "aws_subnet" "dls-prisubnet" {
-
-}
-```
-> Each subnet has to reference the vpc id and also have CIDR blocks
-
-![DLS-VPC](Terraform-Subnets.png)
+##### Subnets
+> Choose the amount of public and private subnets you want to create.
+> These would be distributed evenly across availability zones.
 
 ##### Create Internet Gateway
-```
-resource "aws_internet_gateway" "dls-igw" {
+> Create internet gateway and attach it to the VPC
 
-}
-```
-> Requires connection to the VPC
 
-![DLS-VPC](Terraform-IGW.png)
+##### Route Table
+> Create route tables and associate them to the public and private subnet, internet gateway and NAT gateways
 
-#####  Create Elastic IP
-```
-resource "aws_eip" "dls-eip" {
-  vpc      = true
-}
-```
-##### Create NAT Gateway
-```
-resource "aws_nat_gateway" "dls-nat" {
+##### Allocate Elastic IP
+Allocate Elastic IP to the public subnet
 
-}
-```
-> Requires an Elastic IP and Subnet
-> The Internet Gateway also needs to be running before the NAT Gateway is provisioned
+##### NAT Gateway
+> Create NAT Gateway
 
-##### Create Public Route Tables
-```
-resource "aws_route_table" "dls-pubrt" {
+![DLS-VPC]('Creating VPC Resources.png')
 
-}
-```
-> Requires your VPC ID and Route containing your CIDR block and internet gateway to be able to access the internet
+![DLS-VPC]('VPC Resources.png')
 
-![DLS-VPC](Terraform-RouteTable.png)
+![DLS-VPC](Subnets.png)
 
-##### Create Private Route Tables
-```
-resource "aws_route_table" "dls-prirt" {
+![DLS-VPC]('Route Tables.png')
 
-}
-```
-> Requires your VPC ID and Route containing your CIDR block and NAT gateway to be able to access the internet via the Public Route Table
+![DLS-VPC]('NAT GW.png')
 
-##### Route Table Association
-```
-resource "aws_route_table_association" "dls-rta" {
+![DLS-VPC](IGW.png)
 
-}
-```
-
-> Requires a subnet id and a route table id
-
-##### Route Table Association Private
-```
-resource "aws_route_table_association" "dls-prirta" {
-
-}
-```
-
-> Requires a subnet id and a route table id
