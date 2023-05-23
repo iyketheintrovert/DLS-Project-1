@@ -2,7 +2,7 @@
 
 ## Prequisites
 + Install terraform  
-+ Comfigure AWS CLI  
++ Conmfigure AWS CLI  
 
 ### Create a provider.tf file
 `touch provider.tf`
@@ -20,6 +20,9 @@ resource "aws_vpc" "dls-vpc" {
 ```
 ##### Create Subnets
 ```
+
+![DLS-VPC](DLS-Project-1/CLI/Terraform-VPC.png)
+
 resource "aws_subnet" "dls-pubsubnet" {
 
 }
