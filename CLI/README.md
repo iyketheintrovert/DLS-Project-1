@@ -18,9 +18,11 @@ resource "aws_vpc" "dls-vpc" {
 
 }
 ```
-##### Create Subnets
 
 ![DLS-VPC](Terraform-VPC.png)
+
+##### Create Subnets
+
 ```
 resource "aws_subnet" "dls-pubsubnet" {
 
@@ -32,6 +34,8 @@ resource "aws_subnet" "dls-prisubnet" {
 ```
 > Each subnet has to reference the vpc id and also have CIDR blocks
 
+![DLS-VPC](Terraform-Subnets.png)
+
 ##### Create Internet Gateway
 ```
 resource "aws_internet_gateway" "dls-igw" {
@@ -39,6 +43,8 @@ resource "aws_internet_gateway" "dls-igw" {
 }
 ```
 > Requires connection to the VPC
+
+![DLS-VPC](Terraform-IGW.png)
 
 #####  Create Elastic IP
 ```
@@ -62,6 +68,8 @@ resource "aws_route_table" "dls-pubrt" {
 }
 ```
 > Requires your VPC ID and Route containing your CIDR block and internet gateway to be able to access the internet
+
+![DLS-VPC](Terraform-RouteTable.png)
 
 ##### Create Private Route Tables
 ```
